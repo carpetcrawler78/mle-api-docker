@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c \"f=open\\('c:/Users/thheg/bootcamps/week17/mle-api-docker/02-intro-to-docker.md','rb'\\).read\\(\\); idx=f.find\\(b'mermaid'\\); chunk=f[idx-5:idx+10]; print\\('Hex:', chunk.hex\\(\\)\\); print\\('Chars:', [chr\\(b\\) if 32<=b<127 else hex\\(b\\) for b in chunk]\\)\")"
+    ]
+  }
+}
