@@ -1,0 +1,40 @@
+services:
+  db:
+    image: postgres:17
+    container_name: postgres_compose
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres-db-volume:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - my_network_compose
+
+  app:
+    build: 
+      context: service
+      dockerfile: Dockerfile
+    container_name: fastapi_compose
+    restart: always
+    environment:
+      DB_CONN: postgresql://postgres:postgres@db:5432/fastapi_db
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - my_network_compose
+  
+networks:
+  my_network_compose:
+    driver: bridge
